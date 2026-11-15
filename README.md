@@ -69,8 +69,13 @@ go build -o evilpikin ./cmd/evilpikin
 
 Requires Go 1.26+. No cgo dependencies. Tests: `go test ./...`
 
-## Quick start (local lab, Microsoft 365)
+## Screenshots
 
+**Monitoring console** — live telemetry feed, captured sessions list, per-session JSON/Netscape export, per-target bulk export. Victim identifiers are redacted in this image.
+
+![EvilPikin monitoring console](docs/screenshots/dashboard.png)
+
+## Quick start (local lab, Microsoft 365)
 1. Edit/confirm `configs/targets/microsoft.json` (routing matrix, cookie tracking).
 2. Start the instance: `./evilpikin --no-tui` (loopback defaults; TUI if omitted).
 3. Point the test browser at the phish host (`login.ms.test` or a configured proxy host) — the dev CA under `.sandbox/certs/` must be trusted for that browser profile.

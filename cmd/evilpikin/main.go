@@ -209,6 +209,7 @@ func main() {
 		}
 	}
 
+	*targetsDir = resolvePath(*targetsDir)
 	if err := storage.LoadTargetsFromDir(store, *targetsDir); err != nil {
 		log.Error("seed targets: %v", err)
 	}
@@ -268,7 +269,7 @@ func main() {
 	// from either path are reflected into the live engine via the callbacks.
 	api := control.NewControlAPI(store)
 	api.SetTelemetryHub(hub)
-	api.SetWebDir("web")
+	api.SetWebDir(resolvePath("web"))
 	api.SetBindAddr(*apiAddr)
 	api.OnTargetUpsert(func(t *storage.TargetProfile) {
 		if t.Enabled {

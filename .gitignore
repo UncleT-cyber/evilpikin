@@ -23,3 +23,8 @@ handler.go.bak
 
 # macOS metadata
 .DS_Store
+
+# one-off empty local placeholders
+config
+not
+start

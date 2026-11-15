@@ -110,6 +110,9 @@ func (c *ControlAPI) SetTelemetryHub(h *telemetry.Hub) {
 }
 
 func (c *ControlAPI) Start() error {
+	// SetBindAddr overrides bindAddr after construction; keep the http.Server
+	// in sync with the overridden address (it was built with the default).
+	c.server.Addr = c.bindAddr
 	log.Info("control plane: management api bound to %s", c.bindAddr)
 	return c.server.ListenAndServe()
 }
