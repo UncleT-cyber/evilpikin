@@ -106,10 +106,6 @@ evilpikin is not just a phishing proxy. Wired into **ARK (Cybersecurity Super In
 
 That is the difference between "we got owned" and "we now know exactly why, and what closes it."
 
-<p align="center">
-  <img src="docs/screenshots/ark-integration.png" alt="ARK EvilPikin integration panel" width="90%">
-</p>
-
 ## Screenshots
 
 | TUI cockpit | Web monitoring console |
