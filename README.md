@@ -14,6 +14,7 @@
   <img src="https://img.shields.io/badge/language-Go%201.26-00ADD8?style=flat-square&logo=go&logoColor=white" alt="Go">
   <img src="https://img.shields.io/badge/module-github.com/UncleT-cyber/evilpikin-gray?style=flat-square" alt="module">
   <img src="https://img.shields.io/badge/status-experimental-yellow?style=flat-square" alt="experimental">
+  <img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT License">
 </p>
 
 ---
@@ -21,7 +22,7 @@
 > ### ⚠️ READ THIS BEFORE ANYTHING ELSE
 >
 > **evilpikin is an educational and defensive-research tool. It is not a weapon and not for sale.**
-> It exists so security engineers, teachers, red teams, and defenders can *see*, *observe*, and *measure* an Adversary-in-the-Middle attack end-to-end — the exact tradecraft real phishing campaigns use — in order to design, test, and deploy defenses against it.
+> It exists so security engineers, teachers, red teams, and defenders can *see*, *observe*, and *measure* an Adversary-in-the-Middle attack end-to-end — the exact tradecraft real phishing campaigns use and how to stop it.
 >
 > **What this means, concretely:**
 > - Use it **only** inside explicitly authorized scope: a written engagement, your own lab, an isolated test network, or a CTF-style exercise.
@@ -29,20 +30,20 @@
 > - **Never** for credential harvesting of real people, unsolicited phishes, account takeover, or any non-consensual activity.
 > - The authors assume **zero** liability for misuse. If you did not obtain authorization first: this tool is not for you.
 >
-> **What it does not do:** it is not turnkey malware, it does not phone home, it does not bypass anti-fraud systems on your behalf, and it makes no promise that any target will "work" — production services decide that themselves, by design.
+> **What it does not do:** it is not turnkey malware, it does not phone home, it does not bypass anti-fraud systems on your behalf, and it makes no promise that any target will "work" — products and IdPs evolve faster than any test harness can keep up.
 
 ---
 
 ## Why this exists
 
-Every identity breach post-mortem has the same shape: someone trusted a page that looked like their IdP, and the session walked out the door. Defenders cannot fix what they have never seen. evilpikin was built so *seeing is believing* — an honest, inspectable, end-to-end demonstration of the AiTM technique, written from scratch in Go, with no runtime dependency on any other project.
+Every identity breach post-mortem has the same shape: someone trusted a page that looked like their IdP, and the session walked out the door. Defenders cannot fix what they have never seen. evilpikin exists to make that attack shape visible, measurable, and teachable.
 
 It is a vehicle for:
 
 - **Security education** — showing teams, students, and engineers exactly how a phishing campaign intercepts a sign-in, mints a session, and walks off with it.
 - **Defensive engineering** — measuring whether your detection, MFA, conditional-access, and token-binding controls actually hold against the real attack shape, not a PowerPoint.
 - **Adversary simulation** — an authorized red team measuring real-world resilience of an organization's identity controls, under NDA, on consented scope.
-- **Ark Systems integration** — feeding a simulation into **ARK**, where an assessor can reconstruct the attack, understand *why* each step worked, and generate concrete mitigations (phishing-resistant MFA, conditional access, token binding, DNS monitoring, CT alerting).
+- **Ark Systems integration** — feeding a simulation into **ARK**, where an assessor can reconstruct the attack, understand *why* each step worked, and generate concrete mitigations (phishing-resistant MFA, anti-phishing policy, token hardening, and response playbooks).
 
 ---
 
@@ -80,9 +81,7 @@ Honesty is the whole point of this project. Current state, measured against the 
 
 > **Google and Botguard — what we learned**
 >
-> Google's client-side anti-automation (Botguard v3) evaluates the *visiting browser's* fingerprint before it will let the sign-in flow proceed — before any password is typed, at the identifier stage. It is not a bug in this proxy, and it is not a bug in your browser. It is Google deciding, on the server side and in-page, that the visiting client is an automation harness. No amount of redirect/cookie rewriting changes that verdict; it is the wall every automated Google-targeted phishing flow hits.
->
-> The correct takeaway is a **finding, not a failure mode**: modern anti-fraud systems bind the sign-in flow to the visiting environment itself. Phishing-resistant MFA (FIDO2/WebAuthn) defeats the class entirely — because there is no password to intercept, and a phishing site cannot produce a valid WebAuthn assertion for the real origin. evilpikin exists largely to make that point legible.
+> Google's client-side anti-automation (Botguard v3) evaluates the *visiting browser's* fingerprint before it will let the sign-in flow proceed — before any password is typed, at the identifier prompt itself. That is not a bug in evilpikin; it is the security model of modern anti-fraud systems. The correct takeaway is a **finding, not a failure mode**: modern anti-fraud systems bind the sign-in flow to the visiting environment itself. Phishing-resistant MFA (FIDO2/WebAuthn) defeats the attack when the phishing site cannot produce an authentic challenge context.
 
 ## Features
 
@@ -102,7 +101,7 @@ evilpikin is not just a phishing proxy. Wired into **ARK (Cybersecurity Super In
 1. **The capture** is recorded — lure, target, flow, cookies, telemetry, and who/what was touched.
 2. **ARK ingests it** — sessions are linked to the case, with full provenance and SHA-256 custody hashing.
 3. **ARK assesses it** — *how did this attack succeed? which control failed? what should have stopped it?*
-4. **ARK proposes mitigations** — phishing-resistant MFA, conditional access, session TTL, token binding, DNS-resolver monitoring for intercept domains, CT alerting, user awareness guidance — scoped to the actual attack path shown, not a generic checklist.
+4. **ARK proposes mitigations** — phishing-resistant MFA, conditional access, session TTL, token binding, DNS-resolver monitoring for intercept domains, CT alerting, user awareness guidance — in other words, a measurable path from attack to defense.
 
 That is the difference between "we got owned" and "we now know exactly why, and what closes it."
 
@@ -122,7 +121,7 @@ go build -o evilpikin ./cmd/evilpikin
 ls -la ~/.sandbox              # isolated state (never commit)
 ```
 
-Then open the monitoring console (`http://127.0.0.1:8080/`), add a lure in the TUI (`lure add …`), and walk someone through the attack inside your authorized scope. See [docs/microsoft-setup.md](docs/microsoft-setup.md), [docs/google-setup.md](docs/google-setup.md), and [docs/cookie-editor-import.md](docs/cookie-editor-import.md).
+Then open the monitoring console (`http://127.0.0.1:8080/`), add a lure in the TUI (`lure add …`), and walk someone through the attack inside your authorized scope. See [docs/microsoft-setup.md](docs/microsoft-setup.md) for a canonical setup path.
 
 ## Architecture (short)
 
@@ -162,7 +161,27 @@ If you cannot accept these terms, do not use this software.
 
 ## License
 
-No license is asserted yet. Do not redistribute, relicense, or rebrand without written permission.
+This project is licensed under the [MIT License](LICENSE).
+
+Copyright (c) 2026 UncleT-cyber
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
 ---
 
