@@ -1,0 +1,8 @@
+# Keep the Docker build context small and avoid leaking local state.
+.git
+.sandbox
+.gopath
+*.db
+evilpikin
+dist
+bin

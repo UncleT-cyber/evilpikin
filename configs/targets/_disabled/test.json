@@ -1,0 +1,21 @@
+{
+  "id": "acme-mock",
+  "name": "Acme Mock Identity",
+  "author": "evilpikin",
+  "version": "1.0.0",
+  "proxy_host": "test.local",
+  "origin": "127.0.0.1:9000",
+  "login_urls": ["/"],
+  "auth_urls": ["/login"],
+  "redirect_url": "/",
+  "username_field": "username",
+  "password_field": "password",
+  "cookie_tokens": [
+    { "domain": "127.0.0.1:9000", "name": "SESSION", "optional": false, "in_url": false }
+  ],
+  "force_https": false,
+  "origins": ["127.0.0.1:9000"],
+  "enabled": true,
+  "created_at": "2026-08-26T00:00:00Z",
+  "updated_at": "2026-08-26T00:00:00Z"
+}

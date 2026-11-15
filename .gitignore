@@ -1,0 +1,25 @@
+# Sandbox runtime artifacts (DB, dev CA, keys, captured sessions) — isolated
+# under .sandbox/ so they never pollute the source tree and can be excluded
+# from AV/Spotlight indexing in one place.
+.sandbox/
+*.db
+certs/
+evilpikin.db
+
+# Build artifacts
+/evilpikin
+/bin/
+dist/
+
+# Go cache/toolchain when running inside the dev container as the host UID
+.gopath/
+.cache/
+
+# Maintainer working notes (contain lab identifiers / operational scratch)
+ANCHORED_SUMMARY.md
+BOTGUARD_STATUS.md
+handler.go.bak
+*.bak
+
+# macOS metadata
+.DS_Store

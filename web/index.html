@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>EvilPikin — Operations Dashboard</title>
+<style>
+  :root { --bg:#0d1117; --panel:#161b22; --border:#30363d; --fg:#c9d1d9; --accent:#58a6ff; --ok:#3fb950; --warn:#d29922; --danger:#f85149; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:var(--bg); color:var(--fg); }
+  header { padding:12px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:14px; }
+  .logo { width:42px; height:42px; flex:0 0 auto; }
+  header h1 { font-size:16px; margin:0; color:var(--accent); letter-spacing:1px; }
+  header .sub { font-size:11px; color:var(--fg); opacity:.7; }
+  header .status { margin-left:auto; font-size:12px; }
+  .dot { display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--warn); margin-right:6px; }
+  .dot.live { background:var(--ok); }
+  main { display:grid; grid-template-columns: 1fr 1.5fr; gap:14px; padding:14px; }
+  .panel { background:var(--panel); border:1px solid var(--border); border-radius:8px; padding:12px; height:calc(100vh - 120px); overflow:auto; }
+  .panel h2 { font-size:13px; margin:0 0 10px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; }
+  .ev { font-size:12px; padding:6px 8px; border-left:3px solid var(--border); margin-bottom:6px; background:#0f141b; border-radius:4px; white-space:pre-wrap; }
+  .ev.credential { border-left-color:var(--warn); }
+  .ev.keystroke { border-left-color:var(--accent); }
+  .ev.cookie { border-left-color:var(--ok); }
+  .ev.session { border-left-color:var(--danger); }
+  table { width:100%; border-collapse:collapse; font-size:12px; }
+  th, td { text-align:left; padding:6px 8px; border-bottom:1px solid var(--border); vertical-align:top; }
+  th { color:var(--accent); position:sticky; top:0; background:var(--panel); }
+  .tag { display:inline-block; padding:1px 6px; border-radius:10px; font-size:10px; background:#21323f; color:var(--accent); }
+  .tag.reset { background:#3a2a12; color:var(--warn); }
+  .tag.standard { background:#21323f; color:var(--accent); }
+  .valid { color:var(--ok); }
+  code { background:#0f141b; padding:1px 4px; border-radius:3px; }
+  input,button { font-family:inherit; }
+  .bar { display:flex; gap:8px; margin-bottom:10px; }
+  .bar input { flex:1; background:#0f141b; border:1px solid var(--border); color:var(--fg); padding:6px 8px; border-radius:4px; }
+  .bar button { background:var(--accent); color:#0d1117; border:0; padding:6px 12px; border-radius:4px; cursor:pointer; }
+  .rowbtn { background:#21262d; color:var(--fg); border:1px solid var(--border); padding:3px 8px; border-radius:4px; cursor:pointer; font-size:11px; }
+  .rowbtn.export { color:var(--ok); border-color:#1f4d2e; }
+  .detail { background:#0f141b; border:1px solid var(--border); border-radius:6px; padding:10px; margin-top:10px; }
+  .detail h3 { margin:0 0 8px; font-size:13px; color:var(--warn); }
+  .kv { display:grid; grid-template-columns: 120px 1fr; gap:4px 10px; font-size:12px; }
+  .kv b { color:var(--accent); font-weight:600; }
+  .log { margin-top:8px; max-height:200px; overflow:auto; background:#0b0f14; border:1px solid var(--border); border-radius:4px; padding:6px; font-size:11px; white-space:pre-wrap; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+<header>
+  <svg class="logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="EvilPikin hooded operator">
+    <circle cx="32" cy="32" r="30" fill="#161b22" stroke="#30363d" stroke-width="2"/>
+    <path d="M16 30c0-9 7-15 16-15s16 6 16 15v18c0 2-1.6 3-3.5 3H19.5C17.6 51 16 50 16 48V30z" fill="#0d1117" stroke="#58a6ff" stroke-width="2"/>
+    <path d="M22 28c0-5 4.5-9 10-9s10 4 10 9c0 2-1.6 3.5-3.5 3.5h-13C23.6 31.5 22 30 22 28z" fill="#0d1117" stroke="#58a6ff" stroke-width="1.5"/>
+    <ellipse cx="26" cy="29" rx="3" ry="4" fill="#f85149"/>
+    <ellipse cx="38" cy="29" rx="3" ry="4" fill="#f85149"/>
+    <path d="M24 38c2.5 2 13.5 2 16 0" stroke="#58a6ff" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+    <path d="M30 16c-2-3-1-6 1-7 2 1 3 4 1 7zM34 16c2-3 1-6-1-7-2 1-3 4-1 7z" fill="#161b22" stroke="#58a6ff" stroke-width="1.2"/>
+  </svg>
+  <div>
+    <h1>EVILPIKIN</h1>
+    <div class="sub">AiTM operations cockpit</div>
+  </div>
+  <span class="status"><span id="dot" class="dot"></span><span id="conn">disconnected</span></span>
+</header>
+<main>
+  <section class="panel">
+    <h2>Live Telemetry</h2>
+    <div id="events"></div>
+  </section>
+  <section class="panel">
+    <h2>Captured Sessions</h2>
+    <div class="bar">
+      <select id="targetsel" title="Filter by target dashboard">
+        <option value="">All targets</option>
+      </select>
+      <input id="q" placeholder="filter by username / target / ip" />
+      <button id="refresh">Refresh</button>
+      <button id="exporttarget" class="rowbtn export" title="Export every cookie captured for the selected target as Cookie-Editor JSON">Export Target JSON</button>
+    </div>
+    <div class="bar">
+      <input id="sidq" placeholder="lookup by exact session ID" />
+      <button id="lookup">Open</button>
+    </div>
+    <table>
+      <thead><tr><th>Target</th><th>Username</th><th>Flow</th><th>Cookies</th><th>Remote</th><th>Valid</th><th></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+    <div id="detail" class="detail hidden"></div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

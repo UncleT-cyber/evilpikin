@@ -1,0 +1,20 @@
+# Dev-only isolation image for EvilPikin.
+# This is NOT used in production — it simply gives the operator a Linux
+# sandbox so macOS Gatekeeper / Endpoint Security / AV telemetry never
+# observe the phishing binary executing on the host. Source is mounted at
+# runtime (-v), so the container only RUNS the code; it does not build a
+# shippable artifact.
+FROM golang:1.22-bookworm
+
+# CA certificates so the engine's outbound TLS to real origins validates,
+# and so the generated dev CA / leaf chain behave normally inside the container.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Entrypoint runs the dev cockpit; all flags are passed at `docker run` time.
+# The container binds 127.0.0.1 internally; the host publishes ONLY on
+# 127.0.0.1 (see docker-dev.sh) to keep the tool off the LAN.
+ENTRYPOINT ["go", "run", "./cmd/evilpikin"]
